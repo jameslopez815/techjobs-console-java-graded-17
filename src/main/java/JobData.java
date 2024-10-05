@@ -69,18 +69,21 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        // Ensure all searches are case insensitve
 
-        for (HashMap<String, String> row : allJobs) {
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>(); //store filtered job listings
+        for (HashMap<String, String> row : allJobs) {   // Each row = job listing
 
-            String aValue = row.get(column);
+            String aValue = row.get(column); // Retrieve the value associated with the specific column key
 
-            if (aValue.contains(value)) {
-                jobs.add(row);
+            // Convert both the retrieved value and the search value to lowercase for case-insensitive comparison
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
+                jobs.add(row); // The current row is added to the jobs list if a match is found
             }
         }
 
         return jobs;
+        // return the job list, containing all matching job listings
     }
 
     /**
@@ -94,8 +97,24 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        // TODO - implement this method
-        return null;
+        // Enable a search that looks for the search term in all columns
+        // Create a list to hold matching job entries
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        // Iterate through each job entry
+        for (HashMap<String, String> row : allJobs) {
+            // Check each field in the job entry
+            for (String field : row.values()) {
+                // If the field contains the search value (case insensitive)
+                if (field.toLowerCase().contains(value.toLowerCase())) {
+                    // Add the entire job entry to the results if a match is found
+                    jobs.add(row);
+                    break; // Exit the inner loop to avoid duplicate entries
+                }
+            }
+        }
+        // Return the list of matching job entries
+        return jobs;
     }
 
     /**

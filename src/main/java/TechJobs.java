@@ -10,7 +10,7 @@ public class TechJobs {
 
     static Scanner in = new Scanner(System.in);
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
 
         // Initialize our field map with key/name pairs
         HashMap<String, String> columnChoices = new HashMap<>();
@@ -61,9 +61,12 @@ public class TechJobs {
                 System.out.println("\nSearch term:");
                 String searchTerm = in.nextLine();
 
+                // Use a search term to search all columns, not just one - Use a conditional for broad search
                 if (searchField.equals("all")) {
-                    System.out.println("Search all fields not implemented yet.");
+                    // If the searchField is "all", retrieve all jobs matching the searchTerm
+                    printJobs(JobData.findByValue(searchTerm));
                 } else {
+                    // Otherwise, retrieve jobs based on the specific searchField and searchTerm
                     printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
                 }
             }
@@ -112,14 +115,33 @@ public class TechJobs {
                 validChoice = true;
             }
 
-        } while(!validChoice);
+        } while (!validChoice);
 
         return choiceKeys[choiceIdx];
     }
 
-    // Print a list of jobs
+    //printJobs can only be accessed within the same class
+    //Job listings stored in an ArrayList of HashMap objects.
+    //Each HashMap represents a job, with key-value pairs.
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
 
-        System.out.println("printJobs is not implemented yet");
+        //Check if the list of jobs is empty.
+        if (someJobs.isEmpty()) {
+            System.out.print("No Results");
+            //Iterate through each job in the list
+        } else {
+            for (HashMap<String, String> job : someJobs) {
+                System.out.println("\n*****"); //Print a separator for clarity
+
+                //Iterate through each entry in the job HashMap
+                for (Map.Entry<String, String> entry : job.entrySet()) {
+
+                    //Print the key and value of each job attribute
+                    System.out.println(entry.getKey() + ": " + entry.getValue());
+                }
+                System.out.println("*****"); //End separator for the current job
+            }
+        }
     }
+
 }
